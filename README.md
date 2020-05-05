@@ -115,7 +115,8 @@ energi = sprites.create(img`
 ```
 
 ## Steg 2: Fest kamera til karakteren 
-For å ikke miste karakteren av syne når hen kommer ut av skjermen kan vi legge til blokken ``||scene:camera follow sprite||`` fra menyen ``||scene:Scene||``. Sett den under ``||controller:move mySprite with buttons||``.
+For å ikke miste spiller av syne når hen kommer ut av skjermen kan vi legge til blokken ``||scene:camera follow sprite||`` fra menyen ``||scene:Scene||``. Sett den under ``||controller:move mySprite with buttons||``.
+Kjør test.
 ```blocks
 namespace myTiles {
     //% blockIdentity=images._tile
@@ -224,7 +225,7 @@ energi = sprites.create(img`
     . . . . . . . . . . . . . . . .
 `, SpriteKind.Food)
 ```
-## Steg 5: Fordele energi i bilde 
+## Steg 3: Fordele energi i bilde 
 Vi trenger masse energi-spriter: For å slippe å skrive masse kode tar vi inn en løkke fra ``||loops:Loops||``, finn ``||loops:repeat 4 times||``og plasserer denne over ``||variables:set energi to||``. 
 Dra inn blokken ``||Variables:set energi to||`` inn i løkken. Endre antall repetisjoner til hvor mange energi-spriter du vil ha på skjermen. Vi har valgt **20**
 ```blocks
@@ -338,9 +339,9 @@ for (let index = 0; index < 20; index++) {
     `, SpriteKind.Food)
 }
 ```
-## Steg 6: plassering på ulike fliser på kartet
+## Steg 4: plassering på ulike fliser på kartet
 Plassere energi ut på tilfeldig valgte fliser: Finn ``||scene:place mySprite on top of random||`` fra ``||scene:Scene|``.
-Plasser blokken inn i løkken. Endre type sprite til ``||variables:energi||`` og type **kart-flis** til lilla (lik som i det største rommet).
+Plasser blokken inn i løkken. Endre type sprite til ``||variables:energi||`` og type **kart-flis** til lilla (darkGroundCenter).
 ```blocks
 namespace myTiles {
     //% blockIdentity=images._tile
@@ -453,9 +454,9 @@ for (let index = 0; index < 20; index++) {
     tiles.placeOnRandomTile(energi, sprites.dungeon.darkGroundCenter)
 }
 ```
-## Steg 7: kopierer koden for den andre typen fliser 
+## Steg 5: kopierer koden for den andre typen fliser 
 I den minste rommet vil vi ha masse ``||variables:energi-spriter||``. Vi kopierer ``||loops:løkken||`` og legger den inn i koden i ``||loops:on start|``. 
-Endre antall repetisjoner og type **kart-flis|** til lysebrun (lik som i det minste rommet).  
+Endre antall repetisjoner, vi har valgt 80. Endre type **kart-flis** til lysebrun (tilePath5). Test spillet.
 ```blocks
 namespace myTiles {
     //% blockIdentity=images._tile
@@ -588,18 +589,24 @@ for (let index = 0; index < 80; index++) {
     `, SpriteKind.Food)
     tiles.placeOnRandomTile(energi, sprites.castle.tilePath5)
 }
-info.setScore(0)
 ```
-## Steg 3: overlapp-funksjon 
-Hva skal skje når karakteren overlapper med energi? Finn ``||sprites: on sprite of kind player overlaps...||`` fra ``||sprites:Sprites||`` og plasser denne hvor som helst i arbeidsområdet.
-Endre otherSprite-type til **Food**.
-Legg til blokken ``||sprites:destroy mySprite||`` fra ``||sprites:Sprites||`` og legg den inn i overlapp-villkåret og dra ned ``||variables:otherSprite||`` og erstatt``||variables:mySprite||``.
+## Steg 6: overlapp1 
+Hva skal skje når spiller overlapper med energi? Finn ``||sprites: on sprite of kind player overlaps...||`` fra ``||sprites:Sprites||`` og plasser denne hvor som helst i arbeidsområdet.
+Ny variable: ``||variables:otherSprite||``. Endre otherSprite-type til **Food**.
+```blocks
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
+})
+```
+## Steg 7: overlapp2
+Legg til blokken ``||sprites:destroy mySprite||`` fra ``||sprites:Sprites||`` og legg den inn i overlapp-villkåret.
+Vi kopierer variabelen ``||variables:otherSprite||`` ved å dra denne fra ``||sprites:overlapp-blokken||`` og erstatt ``||variables:mySprite||`` i ``||sprites:destroy mySprite||``.
+Slettes energi-sprite når spiller overlapper?
 ```blocks
 sprites.onOverlap(SpriteKind.Player, SpriteKind.Food, function (sprite, otherSprite) {
     otherSprite.destroy()
 })
 ```
-## Steg 4: poengsum 
+## Steg 8: poengsum 
 Hver gang ``||variables:mySprite||`` overlapper med ``||variables:energi||`` kan vi øke score-variabelen med 1. Blokken for det finner vi i ``||info:Info||``, ``||info:change score by||``. Plasser denne blokken i ``||sprites:overlapp-blokken||``. Vi setter også poengsum til null ved start. Finn ``||info:set score to||`` fra ``||info:Info||``-menyen. Plasser denne nederst i koden i ``||loops:on start||``.
 
 ```blocks
@@ -719,7 +726,7 @@ info.setScore(0)
 })
 ```
 
-## Steg 8: Hvis-vilkår
+## Steg 9: Hvis-vilkår
 Tilfeldig plassering av karakter ved start: Vi finner hvis-blokken ``||logic:if true then else||`` fra ``||logic:Logic-menyen||`` og plasserer denne inn i koden i ``||loops:on start||``.
 Vi finner sammenlignings-blokken **mindre enn** ``||logic:(0 < 0)||`` fra ``||logic:Logic||`` og erstatter **true**. 
 ```blocks
@@ -861,7 +868,7 @@ if (0 < 0) {
 }
 info.setScore(0)
 ```
-## Steg 9: Hvis vilkår forts.
+## Steg 10: Hvis vilkår forts.
 Vi setter inn tilfeldig valgt tall i vilkåret. Finn ``||math:pick random||`` fra ``||math:Math||`` og plasserer den inn i første tall i ``||logic:(0 < 0)||``.
 Sett tilfeldig tall-området til ``||math:(0, 10)||`` og ``||logic:< 8||``. 
 ```blocks
@@ -1003,9 +1010,10 @@ if (Math.randomRange(0, 10) < 8) {
 }
 info.setScore(0)
 ```
-## Steg 10: Hvis-vilkår forts.
+## Steg 11: Hvis-vilkår forts.
 Vi kopierer ``||scene:place on random (mørk flis)||`` inn i ``||logic:if||``, endre sprite til ``||variables:mySprite||``.
 Kopierer ``||scene:place on random (lys flis) ||`` inn i ``||logic:else||``, endre sprite til ``||variables:mySprite||``.
+Kjør test. Hvor på kartet starter spiller?
 ```blocks
 namespace myTiles {
     //% blockIdentity=images._tile
@@ -1145,8 +1153,8 @@ if (Math.randomRange(0, 10) < 8) {
 }
 info.setScore(0)
 ```
-## Steg 11: Start nedtelling
-Start nedtelling ved å finne ``||info:start countdown||`` fra ``||info:Info||`` og sett denne inn ``||loops:on start|``. 
+## Steg 12: Start nedtelling
+Start nedtelling ved å finne ``||info:start countdown||`` fra ``||info:Info||`` og sett denne inn i ``||loops:on start|``. 
 ```blocks
 namespace myTiles {
     //% blockIdentity=images._tile
@@ -1306,9 +1314,9 @@ if (Math.randomRange(0, 10) < 8) {
 info.startCountdown(10)
 info.setScore(0)
 ```
-## Steg 12: Nedtellingsfunksjon
+## Steg 13: Nedtellingsfunksjon
 Hva skal skje når nedtelling tar slutt? Finn ``||info:on countdown end||`` fra ``||info:Info||`` og plasser denne et sted i arbeidsområdet.
-Finn hvis-blokke ``||logic:if else||`` fra ``||logic:Logic||`` of sett blokken inn i ``||info:on countdown end||``. 
+Finn hvis-blokken ``||logic:if then else||`` fra ``||logic:Logic||`` of sett blokken inn i ``||info:on countdown end||``. 
 ```blocks
 info.onCountdownEnd(function () {
     if (true) {
@@ -1318,7 +1326,7 @@ info.onCountdownEnd(function () {
     }
 })
 ```
-## Steg 13: hvis-vilkår
+## Steg 14: hvis-vilkår
 Finn sammenligningsblokken ``||logic:(0 < 0)||`` fra ``||logic:Logic||`` og inn for **true**.
 Finn variablelen ``||info:score||`` fra ``||info:Info||`` og plasser denne i første tall i ``||logic:(0 < 0)||``. Sett score < **20**.
 ```blocks
@@ -1328,7 +1336,7 @@ info.onCountdownEnd(function () {
     }
 })
 ```
-## Steg 14: Game over
+## Steg 15: Game over
 Finn ``||game:game over||`` fra ``||game:Game||`` og sett den i ``||logic:if score < 20||``. 
 Kopier blokken og sett den i ``||logic:else||``. Endre på blokken i else fra Lose til **Win**.
 ```blocks
@@ -1340,7 +1348,7 @@ info.onCountdownEnd(function () {
     }
 })
 ```
-## Steg 15: Gjenta for alltid
+## Steg 16: Gjenta for alltid
 Karakteren forbruker energi hvert sekund: Finn ``||loops:forever||`` fra ``||loops:Loops||`` og plasser denne inn i arbeidsområdet.
 Finn en ny ``||info:change score||`` og set den inn i ``||loops:forever||``. Endre score med **-1**.
 ```blocks
@@ -1350,7 +1358,7 @@ forever(function () {
 ```
 ## Steg 16: pause
 For å ikke miste energi for fort må vi legge inn en pause. Finn ``||loops:pause||`` fra ``||loops:Loops||``.
-Sett pausen til **1000** ms.
+Sett pausen til **1.sekund**.
 ```blocks
 forever(function () {
     info.changeScoreBy(-1)
