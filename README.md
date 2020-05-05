@@ -1365,6 +1365,8 @@ forever(function () {
     pause(1000)
 })
 ```
+## Ferdig
+Bra jobbet! Test spillet for en siste feilsøking. 
 ```template
 namespace myTiles {
     //% blockIdentity=images._tile
