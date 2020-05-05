@@ -1,6 +1,6 @@
 # Game of life - veiledning
 ## Introduksjon @unplugged
-Vi har blokkene for grafikken vi trenger i spillet liggende klart i arbeidsområdet: ``||variables:set mySprite to||``, ``||variables:set energi to||`` og``||scene:set tilemap to||``.
+Blokkene for grafikken vi trenger i spillet ligger klart i arbeidsområdet: ``||variables:set mySprite to||``, ``||variables:set energi to||`` og``||scene:set tilemap to||``.
 Høyre-klikk på blokkene, velg hjelp for mer info om hva blokkene gjør.
 
 ## Steg 1: Vi ønsker å gå rundt med karakteren vår 
@@ -225,8 +225,8 @@ energi = sprites.create(img`
 `, SpriteKind.Food)
 ```
 ## Steg 5: Fordele energi i bilde 
-For å slippe å skrive masse kode når vi legger inn masse energi-spriter, tar vi inn en løkke fra ``||loops:Loops||``, finn ``||loops:repeat 4 times||``og plasserer denne over ``||variables:set energi to||``. 
-Dra inn blokken ``||Variables:set energi to||`` inn i løkken. Endre antall repetisjoner til hvor mange energi-spriter du vil ha på skjermen.
+Vi trenger masse energi-spriter: For å slippe å skrive masse kode tar vi inn en løkke fra ``||loops:Loops||``, finn ``||loops:repeat 4 times||``og plasserer denne over ``||variables:set energi to||``. 
+Dra inn blokken ``||Variables:set energi to||`` inn i løkken. Endre antall repetisjoner til hvor mange energi-spriter du vil ha på skjermen. Vi har valgt **20**
 ```blocks
 namespace myTiles {
     //% blockIdentity=images._tile
@@ -338,8 +338,8 @@ for (let index = 0; index < 20; index++) {
     `, SpriteKind.Food)
 }
 ```
-## Steg 6: plassering på ulike fliser på kartet,  @fullscreen
-Vi kan plassere energi ut på tilfeldig valgte fliser ved hjelp av ``||scene:place mySprite on top of random||``. Den finner du under ``||scene:Scene|``.
+## Steg 6: plassering på ulike fliser på kartet
+Plassere energi ut på tilfeldig valgte fliser: Finn ``||scene:place mySprite on top of random||`` fra ``||scene:Scene|``.
 Plasser blokken inn i løkken. Endre type sprite til ``||variables:energi||`` og type **kart-flis** til lilla (lik som i det største rommet).
 ```blocks
 namespace myTiles {
@@ -452,7 +452,6 @@ for (let index = 0; index < 20; index++) {
     `, SpriteKind.Food)
     tiles.placeOnRandomTile(energi, sprites.dungeon.darkGroundCenter)
 }
-info.setScore(0)
 ```
 ## Steg 7: kopierer koden for den andre typen fliser 
 I den minste rommet vil vi ha masse ``||variables:energi-spriter||``. Vi kopierer ``||loops:løkken||`` og legger den inn i koden i ``||loops:on start|``. 
