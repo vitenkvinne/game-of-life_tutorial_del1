@@ -1,5 +1,5 @@
 # Game of life - veiledning
-## Introduksjon @unplugged
+## Introduksjon @fullscreen
 Blokkene for grafikken vi trenger i spillet ligger klart i arbeidsområdet: ``||variables:set mySprite to||``, ``||variables:set energi to||`` og``||scene:set tilemap to||``.
 Høyre-klikk på blokkene, velg hjelp for mer info om hva blokkene gjør.
 
